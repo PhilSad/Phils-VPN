@@ -79,7 +79,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv6" {
 
 resource "aws_instance" "vpn_server" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 
   tags = {
     Name = "learn-terraform"
