@@ -1,1 +1,6 @@
 .env
+terraform.tfstate.backup
+client.conf
+.terraform.lock.hcl
+terraform.tfstate
+.terraform/*
