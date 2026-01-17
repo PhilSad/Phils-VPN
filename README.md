@@ -5,26 +5,15 @@ This repository contains Terraform code to quickly set up a WireGuard VPN server
 Change the region in `provider "aws"` block in `main.tf` to change the VPN server location, default is eu-north-1 (Stockholm - Sweden).
 
 
-```bash
-# Install Terraform
+## Motivation
+I wanted a free and simple way to set up a VPN server for when I want to change my IP location. 
 
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install terraform
-touch ~/.bashrc
-terraform -install-autocomplete
-```
+## Prerequisites
+- An AWS account with appropriate permissions to create EC2 instances in your chosen region.
+- Terraform installed on your local machine.
+- AWS CLI installed and configured with your credentials.
 
-```bash
-# install AWS CLI
-sudo snap install aws-cli --classic
-aws login
-```
-
+## Usage
 ```bash
 # Initialize Terraform and apply the configuration
 terraform init
@@ -34,4 +23,9 @@ terraform apply
 ```bash
 # After applying, retrieve the client configuration from the output
 terraform output -raw client_configuration > client.conf
+```
+
+```bash
+# Once you're done using the VPN, destroy the resources to avoid incurring costs
+terraform destroy
 ```
