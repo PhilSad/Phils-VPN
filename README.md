@@ -1,6 +1,9 @@
 # Phils-VPN
 
-This repository contains Terraform code to set up a WireGuard VPN server on AWS.
+This repository contains Terraform code to quickly set up a WireGuard VPN server on AWS.
+
+Change the region in `provider "aws"` block in `main.tf` to change the VPN server location, default is eu-north-1 (Stockholm - Sweden).
+
 
 ```bash
 # Install Terraform
