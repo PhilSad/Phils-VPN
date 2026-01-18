@@ -5,7 +5,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y wireguard
 # 1. We use the keys Terraform gave us (Injected via template)
 echo "${server_private_key}" > /etc/wireguard/private.key
 echo "${server_public_key}" > /etc/wireguard/public.key
-
+export interface_name=$(ip -o link show | awk -F': ' '{print $2}' | grep -v lo | head -n 1)
 # 2. Create the WireGuard Config
 cat <<EOF > /etc/wireguard/wg0.conf
 [Interface]
@@ -22,8 +22,8 @@ PrivateKey = ${server_private_key}
 # --- Networking Rules (Crucial for Internet Access) ---
 # These rules tell the server: "When traffic comes from the VPN, send it out to the internet (masquerade)."
 # Note: 'eth0' is the standard AWS network interface. If yours is different, change it.
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o enX0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o enX0 -j MASQUERADE
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o $interface_name -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o $interface_name -j MASQUERADE
 
 [Peer]
 # --- Client Configuration (Your Phone/Laptop) ---

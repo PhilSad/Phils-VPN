@@ -82,7 +82,7 @@ resource "aws_instance" "vpn_server" {
   instance_type = "t3.micro"
 
   tags = {
-    Name = "learn-terraform"
+    Name = "vpn-terraform"
   }
 
   security_groups = [aws_security_group.allow_tls_ssh_wireguard.name]
